@@ -1,5 +1,5 @@
 import { ContextProvider } from '@/components/context';
-import Layout from '@/layout/layout';
+import Layout from '@/layout/LayoutP';
 import '@/styles/globals.css';
 
 export default function App({ Component, pageProps }) {
