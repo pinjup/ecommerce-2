@@ -9,8 +9,18 @@ function ContextProvider({ children }) {
     const [listCategory, setListCategory] = useState([]);
     const [listProducts, setListProducts] = useState([]);
     const [searchValue, setSearchValue] = useState('');
-    const [counterCart, setCounterCart] = useState(0);
+    const [itemsCart, setItemsCart] = useState([]);
     const [Window, setWindow] = useState('');
+    const [totalPriceProducts, setTotalPriceProducts] = useState(0);
+    const [totalQuantityProducts, setTotalQuantityProducts] = useState(0);
+
+    const totalSumProducts = () => {
+        setTotalQuantityProducts(0);
+
+        itemsCart.forEach((product) => {
+            setTotalQuantityProducts((prevTotal) => prevTotal + (product?.quantityProduct || 0));
+        });
+    };
 
     const discountedPrice = (product) =>
         Math.round(product.price - (product.price * Math.ceil(product.discountPercentage)) / 100);
@@ -21,10 +31,6 @@ function ContextProvider({ children }) {
         router.push('/search');
     };
 
-    setTimeout(() => {
-        setWindow(window);
-    }, 500);
-
     const params = new URLSearchParams(Window?.location?.search);
 
     if (router.asPath === '/search') {
@@ -33,13 +39,7 @@ function ContextProvider({ children }) {
     }
 
     useEffect(() => {
-        // const querystring = window.location.search;
-        // const params = new URLSearchParams(querystring);
-
-        // if (router.asPath === '/search') {
-        //     params.set('keywords', searchValue);
-        //     window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
-        // }
+        setWindow(window);
 
         if (params.has('keywords')) {
             console.log('hey');
@@ -66,14 +66,11 @@ function ContextProvider({ children }) {
         getProducts();
     }, []);
 
-    // useEffect(() => {
-    //     const querystring = window.location.search;
-    //     const params = new URLSearchParams(querystring);
+    useEffect(() => {
+        totalSumProducts();
+    }, [itemsCart]);
 
-    //     params.set('search', searchValue);
-
-    //     window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
-    // }, [searchValue]);
+    console.log(totalQuantityProducts);
 
     return (
         <contextE.Provider
@@ -84,11 +81,15 @@ function ContextProvider({ children }) {
                 searchValue,
                 setSearchValue,
                 listProducts,
-                counterCart,
-                setCounterCart,
                 SubmitSearch,
                 params,
                 discountedPrice,
+                itemsCart,
+                setItemsCart,
+                totalPriceProducts,
+                setTotalPriceProducts,
+                totalQuantityProducts,
+                setTotalQuantityProducts,
             }}
         >
             {children}

@@ -1,5 +1,7 @@
 import { contextE } from '@/components/context';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useContext } from 'react';
 
 export default function Home() {
@@ -10,6 +12,8 @@ export default function Home() {
         const arraySlice = filterProducts.slice(0, number);
         return arraySlice;
     };
+
+    const router = useRouter()
 
     // const ImagesCategory = (product) => {
     //     if (!product.images[0].includes('https')) {
@@ -44,7 +48,8 @@ export default function Home() {
                     <div id="container-images" className="p-3 flex gap-3 overflow-x-scroll">
                         {listCategory.map((category) =>
                             sliceProductsCategory(listProducts, category, 1).map((product) => (
-                                <img
+                                <Image
+                                    onClick={() => router.push(`/product/${product.id}`)}
                                     key={product.id}
                                     src={product.images[0]}
                                     alt={`Image of ${product.title}`}
@@ -65,7 +70,8 @@ export default function Home() {
                     <h2 className="pl-4 text-2xl font-medium">Categories</h2>
                     <div id="container-cards" className="flex flex-col gap-8">
                         {listCategory.map((category) => (
-                            <div
+                            <Link
+                                href={`/category/${category}`}
                                 key={category}
                                 className={`w-auto p-4 mx-auto bg-[#fafafa] border-2 ${
                                     listCategory.indexOf(category) % 2 === 0 ? 'border-[#8758FF]' : 'border-[#5CB8E4]'
@@ -97,7 +103,7 @@ export default function Home() {
                                         />
                                     ))}
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 </div>
