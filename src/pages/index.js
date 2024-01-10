@@ -13,32 +13,7 @@ export default function Home() {
         return arraySlice;
     };
 
-    const router = useRouter()
-
-    // const ImagesCategory = (product) => {
-    //     if (!product.images[0].includes('https')) {
-    //         return (
-    //             <img
-    //                 key={product.id}
-    //                 src={'https://i.imgur.com/vZH5TYZ.jpeg'}
-    //                 alt={`Image of ${product.title}`}
-    //                 width={150}
-    //                 height={150}
-    //             />
-    //         );
-    //     } else {
-    //         return (
-    //             <img
-    //                 key={product.id}
-    //                 src={product.images[0]}
-    //                 alt={`Image of ${product.title}`}
-    //                 width={150}
-    //                 height={150}
-    //                 className='w-full h-full border-4 border-[#8758FF]'
-    //             />
-    //         );
-    //     }
-    // };
+    const router = useRouter();
 
     return (
         <>
@@ -89,7 +64,7 @@ export default function Home() {
                                     </span>
 
                                     {sliceProductsCategory(listProducts, category, 4).map((product) => (
-                                        <img
+                                        <Image
                                             key={product.id}
                                             src={product.images[0]}
                                             alt={`Image of ${product.title}`}

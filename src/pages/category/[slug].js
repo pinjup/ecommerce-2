@@ -4,7 +4,9 @@ import { useContext, useEffect } from 'react';
 import ListProducts from '@/components/ListProducts';
 
 export default function Home() {
-    const { listProducts, discountedPrice, listCategory } = useContext(contextE);
+    const { listProducts, listCategory } = useContext(contextE);
+
+    'l';
 
     console.log(listProducts);
 
@@ -14,7 +16,7 @@ export default function Home() {
         if (!listCategory.includes(router.query.slug)) {
             router.push('/');
         }
-    }, []);
+    }, [listCategory, router]);
 
     const filterCategoryProducts = (array, categoryName) => {
         return array.filter(({ category }) => category === categoryName);

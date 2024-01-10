@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useRef, useState } from 'react';
 
 const contextE = createContext();
 
@@ -13,14 +13,34 @@ function ContextProvider({ children }) {
     const [Window, setWindow] = useState('');
     const [totalPriceProducts, setTotalPriceProducts] = useState(0);
     const [totalQuantityProducts, setTotalQuantityProducts] = useState(0);
+    const [windowSize, setWindowSize] = useState({
+        width: Window.innerWidth === '' ? 0 : Window.innerWidth,
+        height: Window.innerHeight === '' ? 0 : Window.innerHeight,
+    });
 
-    const totalSumProducts = () => {
-        setTotalQuantityProducts(0);
+    const counterResize = useRef(0);
 
-        itemsCart.forEach((product) => {
-            setTotalQuantityProducts((prevTotal) => prevTotal + (product?.quantityProduct || 0));
-        });
-    };
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowSize({
+                width: window.innerWidth,
+                height: window.innerHeight,
+            });
+        };
+
+        const LoadChargeWindowSize = () => {
+            if (counterResize.current === 0) handleResize();
+            counterResize.current += 1;
+        };
+
+        LoadChargeWindowSize();
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const discountedPrice = (product) =>
         Math.round(product.price - (product.price * Math.ceil(product.discountPercentage)) / 100);
@@ -52,25 +72,34 @@ function ContextProvider({ children }) {
             // const namesCategory = response.data.map(category => category.name)
             setListCategory(response.data.slice(0, 6));
         }
-        getCategories();
 
         async function getProducts() {
-            const response = await axios.get('https://dummyjson.com/products');
+            const { data: { products } } = await axios.get('https://dummyjson.com/products');
             // const namesCategory = response.data.map(category => category.name)
-            const products = response.data?.products;
+            console.log(products);
+            //const products = response.data?.products;
             // const filterProducts = products.filter(product => listCategory.some(category => category?.name === product?.category?.name))
             // console.log(filterProducts)
             setListProducts(products);
         }
 
+        getCategories();
+
         getProducts();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
+        const totalSumProducts = () => {
+            setTotalQuantityProducts(0);
+
+            itemsCart.forEach((product) => {
+                setTotalQuantityProducts((prevTotal) => prevTotal + (product?.quantityProduct || 0));
+            });
+        };
+
         totalSumProducts();
     }, [itemsCart]);
-
-    console.log(totalQuantityProducts);
 
     return (
         <contextE.Provider
@@ -90,6 +119,7 @@ function ContextProvider({ children }) {
                 setTotalPriceProducts,
                 totalQuantityProducts,
                 setTotalQuantityProducts,
+                windowSize,
             }}
         >
             {children}

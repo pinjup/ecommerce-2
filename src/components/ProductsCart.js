@@ -9,7 +9,7 @@ export default function ProductsCart({ product }) {
 
     const ClickProduct = (event, thisProduct) => {
         const deleteProductArray = itemsCart.filter((product) => product?.id !== thisProduct?.id);
-        if (event.target.id == 'delete-product') {
+        if (event.target.id == 'container_button-delete') {
             setItemsCart(deleteProductArray);
         }
     };
@@ -74,7 +74,6 @@ export default function ProductsCart({ product }) {
                     className="w-full h-[35%] min-h-[64px] max-h-16"
                 />
             </div>
-
             <div id={`container_info_product-${product.id}`} className="p-3 w-full h-full flex flex-col justify-center">
                 <span id={`title_product-${product.id}`} className="text-lg font-normal">
                     {product.title}
@@ -115,16 +114,17 @@ export default function ProductsCart({ product }) {
                 </div>
             </div>
 
-            <svg
-                id="delete-product"
-                className="absolute -top-3 -right-2 w-8 h-8 text-red-500"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-            >
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
-            </svg>
+            <div id="container_button-delete" className="absolute -top-5 -right-4 p-2">
+                <svg
+                    className=" w-8 h-8 text-red-500"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
+                </svg>
+            </div>
         </div>
     );
 }

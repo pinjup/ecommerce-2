@@ -1,12 +1,11 @@
 import ProductsCart from '@/components/ProductsCart';
 import { contextE } from '@/components/context';
-import Image from 'next/image';
 import { useContext } from 'react';
 
 export default function Home() {
     const { itemsCart, totalPriceProducts, totalQuantityProducts } = useContext(contextE);
 
-    console.log(itemsCart);
+    console.log(itemsCart.length);
 
     console.log(totalQuantityProducts);
 
@@ -55,15 +54,15 @@ export default function Home() {
 
                 <div id="products" className="p-4 grid grid-cols-1 gap-5">
                     {itemsCart.map((product) => (
-                        <ProductsCart product={product} />
+                        <ProductsCart key={product.id} product={product} />
                     ))}
                 </div>
 
-                <div id="buy" className="w-full flex justify-center">
+                {itemsCart.length >= 1 && (<div id="buy" className="w-full flex justify-center">
                     <button className="p-3 w-1/2 flex items-center justify-center text-white text-xl font-normal bg-[#8758FF] rounded-lg">
                         Buy now
                     </button>
-                </div>
+                </div>)}
             </main>
         </>
     );

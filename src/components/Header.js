@@ -2,11 +2,12 @@ import Link from 'next/link';
 import React from 'react';
 import { contextE } from '@/components/context';
 import { useContext } from 'react';
+import InputSearch from './inputSearch';
 
 export default function Header() {
-    const { setModalBars, totalQuantityProducts } = useContext(contextE);
+    const { setModalBars, totalQuantityProducts, windowSize } = useContext(contextE);
     return (
-        <header className="w-full h-16 p-4 flex justify-between items-center bg-[#181818]">
+        <header className="w-full h-16 p-4 flex justify-between items-center bg-[#181818] sm:py-6">
             <div id="bars_&_logo" className="flex items-center gap-4">
                 <svg
                     onClick={() => setModalBars(true)}
@@ -32,6 +33,8 @@ export default function Header() {
                     <span className="text-[#5CB8E4]">ly</span>
                 </Link>
             </div>
+
+            {windowSize.width < 640 ? <></> : <InputSearch classNameList={['w-1/2']} id={'input-search_header'} />}
 
             <div id="container-icons" className="flex gap-5">
                 <Link href={'/cart'}>
